@@ -10,11 +10,17 @@ export class GangService {
     @InjectModel('User') private readonly User: Model<any>
   ) {}
 
-  create = async (body) => {
-    return body
-  }
-  getList = async () => {
-    const gang_data = await this.Gang.find({ status: true })
+  getList = async (body) => {
+    const { sport_type, page = 0, pageLimit = 10 } = body
+    let condition = {}
+
+    if (sport_type) {
+      condition = { sport_type: sport_type, status: true }
+    } else {
+      condition = { status: true }
+    }
+
+    const gang_data = await this.Gang.find(condition).skip(page * pageLimit)
 
     return { code: 200, data: gang_data }
   }
@@ -81,9 +87,9 @@ export class GangService {
   }
 
   createGang = async (body) => {
-    const { gang_name, gane_detail, grang_address, host } = body
+    const { gang_name, gane_detail, grang_address, host, sport_type = null } = body
 
-    const check_dup = await this.Gang.findOne({ gang_name: gang_name })
+    const check_dup = await this.Gang.findOne({ gang_name: gang_name, sport_type: sport_type })
 
     if (check_dup) {
       return { code: 304, message: 'Dupicate Gang' }
@@ -94,6 +100,7 @@ export class GangService {
       grang_address: grang_address,
       host: host,
       status: true,
+      sport_type: sport_type,
       create_dt: new Date()
     }).save()
 

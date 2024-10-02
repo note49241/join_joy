@@ -11,9 +11,9 @@ export class GangController {
   //   return this.gangService.getHello();
   // }
 
-  @Get('/list')
-  getList() {
-    return this.gangService.getList()
+  @Post('/list')
+  getList(@Body() body) {
+    return this.gangService.getList(body)
   }
 
   @Get('/:gang_id')
