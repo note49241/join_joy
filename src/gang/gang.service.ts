@@ -14,9 +14,9 @@ export class GangService {
     return body
   }
   getList = async () => {
-    const gang_data = await this.Gang.findOne({ status: true })
+    const gang_data = await this.Gang.find({ status: true })
 
-    return gang_data
+    return { code: 200, data: gang_data }
   }
 
   getDetail = async (param) => {
@@ -24,7 +24,7 @@ export class GangService {
 
     const gang_data = await this.Gang.findOne({ _id: gang_id, status: true })
 
-    return gang_data
+    return { code: 200, data: gang_data }
   }
 
   joinGang = async (body) => {
@@ -58,7 +58,7 @@ export class GangService {
       { new: true } // Return the updated document
     )
 
-    return update_gang_party_data
+    return { code: 200, data: update_gang_party_data }
   }
 
   unJoin = async (body) => {
@@ -77,12 +77,17 @@ export class GangService {
 
     const updatedGang = await this.HisGang.findByIdAndUpdate(party_id, { $set: { gang_player: un_join } }, { new: true })
 
-    return updatedGang
+    return { code: 200, data: updatedGang }
   }
 
   createGang = async (body) => {
     const { gang_name, gane_detail, grang_address, host } = body
 
+    const check_dup = await this.Gang.findOne({ gang_name: gang_name })
+
+    if (check_dup) {
+      return { code: 304, message: 'Dupicate Gang' }
+    }
     const res = new this.Gang({
       gang_name: gang_name,
       gane_detail: gane_detail,
@@ -92,7 +97,7 @@ export class GangService {
       create_dt: new Date()
     }).save()
 
-    return res
+    return { code: 201, data: { ...res } }
   }
 
   updateGang = async (body) => {
@@ -119,7 +124,7 @@ export class GangService {
       { new: true }
     )
 
-    return updatedGang
+    return { code: 200, data: updatedGang }
   }
 
   openPartyGang = async (body) => {
@@ -159,13 +164,13 @@ export class GangService {
       create_dt: new Date()
     }).save()
 
-    return {code:200,data:create_party}
+    return { code: 201, data: create_party }
   }
 
   getHisJoinGang = async (body) => {
     const { user_id } = body
 
-    const check_user_data = await this.User.findById({ user_id })
+    const check_user_data = await this.User.findOne({ _id: user_id })
 
     if (!check_user_data) {
       return { code: 404, message: 'invalid user' }
@@ -173,6 +178,6 @@ export class GangService {
 
     const check_his_join = await this.HisGang.find({ 'gang_player.user_id': user_id }).sort({ gane_event_date: -1 })
 
-    return check_his_join
+    return { code: 200, data: check_his_join }
   }
 }

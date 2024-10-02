@@ -17,13 +17,13 @@ export class AuthService {
     try {
       const check_user = await this.User.findOne({ user_name: username })
       if (!check_user) {
-        return { code: 304, message: 'invalid user' }
+        return { code: 400, message: 'invalid user' }
       }
 
       const comparePass = await bcrypt.compare(password, check_user.password)
 
       if (!comparePass) {
-        return { code: 304, message: 'invalid password' }
+        return { code: 400, message: 'invalid password' }
       }
 
       await this.User.findByIdAndUpdate(check_user._id, { $set: { last_login: new Date() } }, { new: true })

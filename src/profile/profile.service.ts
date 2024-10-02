@@ -30,7 +30,7 @@ export class ProfileService {
       create_dt: new Date()
     }).save()
 
-    return createUser
+    return { code: 201, data: createUser }
   }
 
   update = async (body) => {
@@ -48,7 +48,7 @@ export class ProfileService {
       { new: true } // Return the updated document
     )
 
-    return update_data
+    return { code: 201, data: update_data }
   }
 
   rePass = async (body) => {
@@ -73,6 +73,6 @@ export class ProfileService {
       { new: true } // Return the updated document
     )
 
-    return update_data
+    return { code: 201, data: update_data }
   }
 }
