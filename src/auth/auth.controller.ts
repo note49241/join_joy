@@ -15,4 +15,9 @@ export class AuthController {
   async logout(@Body() body) {
     return this.todoService.logout(body)
   }
+
+  @Post('/session')
+  async validateLogin(@Body() body) {
+    return this.todoService.validateLogin(body.token)
+  }
 }
