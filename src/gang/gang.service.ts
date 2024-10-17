@@ -20,7 +20,9 @@ export class GangService {
       condition = { status: true }
     }
 
-    const gang_data = await this.Gang.find(condition).skip(page * pageLimit)
+    const gang_data = await this.Gang.find(condition)
+      .skip(page * pageLimit)
+      .limit(pageLimit)
 
     return { code: 200, data: gang_data }
   }
@@ -87,7 +89,7 @@ export class GangService {
   }
 
   createGang = async (body) => {
-    const { gang_name, gane_detail, grang_address, host, sport_type = null } = body
+    const { gang_name, gang_detail, gang_address, host, sport_type = null } = body
 
     const check_dup = await this.Gang.findOne({ gang_name: gang_name, sport_type: sport_type })
 
@@ -96,8 +98,8 @@ export class GangService {
     }
     const res = new this.Gang({
       gang_name: gang_name,
-      gane_detail: gane_detail,
-      grang_address: grang_address,
+      gang_detail: gang_detail,
+      gang_address: gang_address,
       host: host,
       status: true,
       sport_type: sport_type,
@@ -108,7 +110,7 @@ export class GangService {
   }
 
   updateGang = async (body) => {
-    const { gang_id, gang_name, gane_detail, grang_address, user_id } = body
+    const { gang_id, gang_name, gang_detail, gang_address, user_id } = body
 
     const check_user = await this.User.findById({ user_id })
 
@@ -123,8 +125,8 @@ export class GangService {
       {
         $set: {
           gang_name: gang_name,
-          gane_detail: gane_detail,
-          grang_address: grang_address,
+          gang_detail: gang_detail,
+          gang_address: gang_address,
           admin: [...check_permission.admin, { user_id: check_user._id, admin_name: check_user.name }]
         }
       },

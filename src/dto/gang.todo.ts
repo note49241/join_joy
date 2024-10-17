@@ -6,10 +6,10 @@ export class CreateGangDto {
   gang_name: string
 
   @IsString()
-  gane_detail: string
+  gang_detail: string
 
   @IsString()
-  grang_address: string
+  gang_address: string
 
   @IsString()
   host: string
@@ -21,10 +21,10 @@ export class updateGangDto {
   gang_name: string
 
   @IsString()
-  gane_detail: string
+  gang_detail: string
 
   @IsString()
-  grang_address: string
+  gang_address: string
 
   @IsString()
   host: string

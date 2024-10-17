@@ -12,9 +12,9 @@ export const gang_admin = new mongoose.Schema({
 
 export const Gang = new mongoose.Schema({
   gang_name: String,
-  gane_detail: String,
+  gang_detail: String,
   gang_qr: String,
-  grang_address: String,
+  gang_address: String,
   gang_map: String,
   gang_logo: String,
   gang_thumbnail: String,

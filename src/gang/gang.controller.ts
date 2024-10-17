@@ -10,7 +10,7 @@ export class GangController {
   // getHello(): string {
   //   return this.gangService.getHello();
   // }
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Post('/list')
   getList(@Body() body) {
     return this.gangService.getList(body)
